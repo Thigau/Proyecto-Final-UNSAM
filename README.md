@@ -4,4 +4,6 @@ Todavia no tenemos la consigna
 
 ## Descripcion
 
+## Componentes
+
 ## Usos
