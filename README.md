@@ -16,9 +16,11 @@ La primera etapa del proyecto se desarrolla y prueba mediante una simulación en
 
 Actualmente el proyecto se encuentra en una etapa inicial de diseño y simulación.
 
+Versión actual: `v0.1.0` — circuito inicial funcional.
+
 - [x] Definir la idea general.
 - [x] Seleccionar los componentes.
-- [ ] Diseñar el circuito inicial.
+- [x] Diseñar el circuito inicial.
 - [ ] Implementar la lectura de sensores.
 - [ ] Implementar el riego automático.
 - [ ] Implementar la iluminación automática.

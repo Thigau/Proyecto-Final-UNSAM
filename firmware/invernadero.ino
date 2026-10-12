@@ -1,9 +1,15 @@
-void setup() {
-  // put your setup code here, to run once:
+const int LED_RIEGO = 8;
 
+void setup()
+{
+  pinMode(LED_RIEGO, OUTPUT);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop()
+{
+  digitalWrite(LED_RIEGO, HIGH);
+  delay(1000);
 
+  digitalWrite(LED_RIEGO, LOW);
+  delay(1000);
 }

@@ -8,11 +8,11 @@ Cada versión debe incluir una captura del circuito, una descripción de los cam
 
 Enlace de Tinkercad:
 
-> Pendiente de agregar.
+[Abrir la simulación en Tinkercad](https://www.tinkercad.com/things/3ApQIPepXQz-invernadero-proyecto-labo-1/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard&sharecode=7U7pwsu07O8A8DXGv41fDI6yS_DnJD5i0dr5DXYXfiE)
 
 Versión actual:
 
-> `v0.1.0` — En preparación.
+> `v0.1.0` — Funcional.
 
 ## Convención para las imágenes
 
@@ -40,24 +40,32 @@ Para insertar una captura:
 
 - Se agregó el Arduino Uno.
 - Se agregó la breadboard.
-- Se conectaron las líneas de alimentación.
-- Se realizó una prueba básica con un LED.
+- Se conectó un LED azul al pin digital 8 mediante una resistencia de 220 Ω.
+- Se programó un parpadeo de un segundo para comprobar la salida digital.
 
 **Circuito:**
 
 ![Circuito correspondiente a la versión 0.1.0](images/tinkercad-v0.1.0.png)
 
+**Conexiones incorporadas:**
+
+| Origen | Destino | Función |
+|---|---|---|
+| Pin digital 8 | Resistencia de 220 Ω | Salida controlada por Arduino |
+| Resistencia de 220 Ω | Ánodo del LED azul | Limitación de corriente |
+| Cátodo del LED azul | GND | Cierre del circuito |
+
 **Pruebas realizadas:**
 
 | Prueba | Resultado |
 |---|---|
-| La simulación inicia correctamente | Pendiente |
-| El código compila sin errores | Pendiente |
-| El LED responde correctamente | Pendiente |
+| La simulación inicia correctamente | Correcto |
+| El código compila sin errores | Correcto |
+| El LED responde correctamente | Correcto: enciende y apaga cada segundo |
 
 **Problemas conocidos:**
 
-- Pendiente de completar.
+- Ninguno conocido.
 
 ---
 
