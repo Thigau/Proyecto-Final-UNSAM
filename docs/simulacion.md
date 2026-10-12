@@ -12,7 +12,7 @@ Enlace de Tinkercad:
 
 Versión actual:
 
-> `v0.1.0` — Funcional.
+> `v0.2.0` — Lectura de sensores funcional.
 
 ## Convención para las imágenes
 
@@ -75,32 +75,39 @@ Para insertar una captura:
 
 **Cambios realizados:**
 
-- Pendiente de completar.
+- Se agregó un potenciómetro para simular la humedad de la tierra.
+- Se agregó un TMP36 para medir la temperatura.
+- Se agregó una fotoresistencia con un divisor de tensión de 10 kΩ.
+- Se incorporó la lectura de `A0`, `A1` y `A2`.
+- Se convirtieron humedad e iluminación a porcentajes y la temperatura a grados Celsius.
+- Se mostraron las tres mediciones mediante el monitor serie.
 
 **Circuito:**
 
-> Captura pendiente.
+![Circuito correspondiente a la versión 0.2.0](images/tinkercad-v0.2.0.png)
 
 **Conexiones agregadas:**
 
 | Componente | Pin del componente | Conexión |
 |---|---|---|
-| Potenciómetro de humedad | Pendiente | Pendiente |
-| TMP36 | Pendiente | Pendiente |
-| Fotoresistencia | Pendiente | Pendiente |
+| Potenciómetro de humedad | Cursor central | `A0` |
+| TMP36 | `VOUT`, pata central | `A1` |
+| Fotoresistencia | Unión con resistencia de 10 kΩ | `A2` |
+| Sensores | Alimentación | 5 V y GND compartidos |
 
 **Pruebas realizadas:**
 
 | Prueba | Resultado |
 |---|---|
-| Lectura de humedad | Pendiente |
-| Lectura de temperatura | Pendiente |
-| Lectura de iluminación | Pendiente |
-| Visualización en monitor serie | Pendiente |
+| Lectura de humedad | Correcto: porcentaje variable |
+| Lectura de temperatura | Correcto: conversión a grados Celsius |
+| Lectura de iluminación | Correcto: porcentaje variable |
+| Visualización en monitor serie | Correcto: tres mediciones visibles |
+| Funcionamiento del LED azul | Correcto: conserva el parpadeo |
 
 **Problemas conocidos:**
 
-- Pendiente de completar.
+- Ninguno conocido. Durante el montaje se corrigió una conexión incorrecta de GND en el divisor de la fotoresistencia.
 
 ---
 
