@@ -22,13 +22,12 @@ Estado publicado actual: rama `feat/lcd_Otros` — lectura de sensores, pantalla
 - [x] Seleccionar los componentes.
 - [x] Diseñar el circuito inicial.
 - [x] Implementar la lectura de sensores.
-- [x] Implementar una primera lógica de riego automático.
-- [x] Implementar una primera lógica de iluminación automática.
+- [ ] Implementar el riego automático.
+- [x] Implementar la iluminación automática.
 - [ ] Implementar la ventilación automática.
 - [ ] Incorporar los modos manual y automático.
 - [ ] Incorporar alarmas.
 - [x] Incorporar la pantalla LCD.
-- [x] Validar los umbrales y el circuito completo de iluminación.
 - [ ] Integrar y probar el sistema completo.
 - [ ] Preparar la versión final.
 
