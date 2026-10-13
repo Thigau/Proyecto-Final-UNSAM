@@ -2,6 +2,30 @@
 
 Los cambios relevantes del proyecto se documentan en este archivo.
 
+## Rama `feat/lcd_Otros` — 2026-10-13
+
+### Agregado
+
+- Pantalla LCD 16×2 con interfaz I2C y dirección `0x27`.
+- Visualización de humedad, iluminación, temperatura y estado de la bomba en el LCD.
+- Primera lógica automática de bomba en el pin 13: luz menor a 80 %, temperatura mayor a 15 °C y humedad menor a 30 %.
+- Salida de iluminación artificial en el pin 9, activada cuando la iluminación es menor o igual a 25 %.
+- Tres LEDs violetas conectados en paralelo, cada uno con su propia resistencia de 220 Ω.
+- Transistor NPN controlado mediante una resistencia de base de 1 kΩ para conmutar conjuntamente las luces.
+- Captura del circuito en `docs/images/tinkercad-feat-lcd-otros.png`.
+
+### Corregido
+
+- Se separaron las ramas de los tres LEDs violetas para evitar conexiones accidentales entre columnas de la breadboard.
+- Se corrigió el montaje que conectaba la resistencia y GND sobre la misma pata del LED, dejando la otra pata fuera del circuito.
+
+### Verificado
+
+- El LCD presenta correctamente las mediciones y el estado de la bomba.
+- La salida de bomba responde a las condiciones definidas en el firmware.
+- Los tres LEDs violetas se encienden y apagan simultáneamente mediante el transistor.
+- Las luces se activan cuando la medición de iluminación es menor o igual a 25 %.
+
 ## [`v0.2.0`] — 2026-10-12
 
 ### Agregado

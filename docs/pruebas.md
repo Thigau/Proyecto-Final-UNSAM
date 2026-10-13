@@ -86,3 +86,44 @@ La lectura de iluminación permanecía cerca de cero porque el GND del divisor d
 ### Conclusión
 
 El circuito y el programa cumplen el objetivo del hito `v0.2.0`. No se detectaron problemas pendientes en las lecturas analógicas.
+
+## Rama `feat/lcd_Otros` — LCD, bomba e iluminación artificial
+
+**Fecha:** 13 de octubre de 2026
+
+**Entorno:** Tinkercad Circuits
+
+**Rama:** `feat/lcd_Otros`
+
+### Objetivo
+
+Integrar la visualización de mediciones, una primera lógica de bomba y el encendido automático de tres luces violetas.
+
+### Pruebas registradas
+
+| Prueba | Resultado esperado | Estado |
+|---|---|---|
+| Inicialización del LCD | El LCD utiliza la dirección `0x27` y enciende su luz de fondo | Correcto |
+| Visualización de sensores | El LCD muestra humedad, luz y temperatura | Correcto |
+| Estado de la bomba | El LCD muestra `B:ON` o `B:OFF` | Correcto |
+| Salida de bomba | El pin 13 cambia según los tres umbrales definidos | Correcto |
+| Umbral de iluminación | El pin 9 pasa a `HIGH` con iluminación menor o igual a 25 % | Correcto |
+| Tres luces violetas | Las tres ramas se encienden simultáneamente mediante el transistor | Correcto |
+
+### Incidencia de montaje detectada
+
+Durante la prueba inicial, las luces no encendían incluso al retirar el transistor. La resistencia de 220 Ω y el cable de retorno a GND estaban conectados a la misma pata de cada LED, mientras que la otra pata quedaba sin conexión. De esta forma, la corriente no atravesaba el LED.
+
+El montaje se reorganizó dejando una rama independiente por LED:
+
+```text
+5 V → 220 Ω → ánodo → LED → cátodo → retorno común
+```
+
+### Problemas conocidos
+
+- Ninguno detectado en las pruebas actuales de Tinkercad.
+
+### Conclusión
+
+La interfaz LCD, la salida de bomba y la iluminación artificial funcionan correctamente en la simulación publicada en la rama `feat/lcd_Otros`.
