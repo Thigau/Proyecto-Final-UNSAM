@@ -6,9 +6,11 @@ const int LED_RIEGO = 8;
 const int PIN_SENSOR_HUMEDAD = A0;
 const int PIN_SENSOR_TEMPERATURA = A1;
 const int PIN_SENSOR_LUZ = A2;
+const int PIN_LUCES_ULTRAVIOLETAS = 9;
 void setup()
 {
   pinMode(LED_RIEGO, OUTPUT);
+  pinMode(PIN_LUCES_ULTRAVIOLETAS, OUTPUT);
   lcd.init();
   lcd.backlight();
   lcd.setCursor(1,12);
@@ -16,6 +18,15 @@ void setup()
   delay(1000);
   lcd.clear();
   Serial.begin(9600);
+}
+
+void manejarLuzUltravioleta()
+{
+  int lectura = analogRead(PIN_SENSOR_LUZ);
+  float porcentajeLuz = lectura * 100.0 / 1023.0;
+  bool encender = porcentajeLuz <= 25.0;
+
+  digitalWrite(PIN_LUCES_ULTRAVIOLETAS, encender ? HIGH : LOW);
 }
 
 void ledParpadeando(){
@@ -80,4 +91,5 @@ void loop()
 {
   ledParpadeando();
   mostrarDatosIntermitente();
+  manejarLuzUltravioleta();
 }
