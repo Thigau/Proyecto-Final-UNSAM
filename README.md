@@ -23,11 +23,11 @@ Versión actual: `v0.2.0` — lectura de sensores funcional.
 - [x] Diseñar el circuito inicial.
 - [x] Implementar la lectura de sensores.
 - [ ] Implementar el riego automático.
-- [ ] Implementar la iluminación automática.
+- [x] Implementar la iluminación automática.
 - [ ] Implementar la ventilación automática.
 - [ ] Incorporar los modos manual y automático.
 - [ ] Incorporar alarmas.
-- [ ] Incorporar la pantalla LCD.
+- [x] Incorporar la pantalla LCD.
 - [ ] Integrar y probar el sistema completo.
 - [ ] Preparar la versión final.
 
