@@ -7,8 +7,11 @@ const int PIN_SENSOR_HUMEDAD = A0;
 const int PIN_SENSOR_TEMPERATURA = A1;
 const int PIN_SENSOR_LUZ = A2;
 const int PIN_LUCES_ULTRAVIOLETAS = 9;
+const int PIN_BOMBA_AGUA = 13;
+
 void setup()
 {
+  pinMode(PIN_BOMBA_AGUA, OUTPUT);
   pinMode(LED_RIEGO, OUTPUT);
   pinMode(PIN_LUCES_ULTRAVIOLETAS, OUTPUT);
   lcd.init();
@@ -66,6 +69,10 @@ float sensarYMostrarLuz()
   return porcentajeLuz;
 }
 
+bool prendioBomba(float luz, float temp, float hum) {
+  return luz < 80 && temp > 15 && hum < 30;
+}
+
 void mostrarDatosIntermitente(){
   lcd.setCursor(0, 0);
   lcd.print("H:");
@@ -83,12 +90,19 @@ void mostrarDatosIntermitente(){
   lcd.print((char)176);
   lcd.print("C");
 
-  lcd.setCursor(8, 1);
-  //Aca va cuando se prende o apaga la bomba de riego;
+  lcd.setCursor(9, 1);
+  lcd.print("B:");
+  lcd.print(prendioBomba(sensarYMostrarLuz(), sensarYMostrarTemperatura(), sensarYMostrarHumedad()) ? "ON " : "OFF");
 }
+
 
 void loop()
 {
+  if(prendioBomba(sensarYMostrarLuz(), sensarYMostrarTemperatura(), sensarYMostrarHumedad())){
+    digitalWrite(PIN_BOMBA_AGUA, HIGH);
+  } else{
+    digitalWrite(PIN_BOMBA_AGUA, LOW);
+  }
   ledParpadeando();
   mostrarDatosIntermitente();
   manejarLuzUltravioleta();
