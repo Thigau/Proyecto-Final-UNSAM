@@ -9,8 +9,29 @@ const int PIN_SENSOR_LUZ = A2;
 const int PIN_LUCES_ULTRAVIOLETAS = 9;
 const int PIN_BOMBA_AGUA = 13;
 
-void setup()
-{
+const unsigned long DURACION_INICIO_MS = 1000;
+const unsigned long INTERVALO_PARPADEO_MS = 500;
+const unsigned long INTERVALO_MUESTREO_MS = 1000;
+
+unsigned long inicioPantalla = 0;
+unsigned long ultimoCambioLed = 0;
+unsigned long ultimoMuestreo = 0;
+
+bool pantallaInicioActiva = true;
+bool estadoLedRiego = false;
+
+bool esperar(unsigned long inicio, unsigned long duracion){
+  unsigned long ahora = millis();
+
+  if (ahora - inicio < duracion){
+    return false;
+  }
+
+  inicio = ahora;
+  return true;
+}
+
+void setup(){
   pinMode(PIN_BOMBA_AGUA, OUTPUT);
   pinMode(LED_RIEGO, OUTPUT);
   pinMode(PIN_LUCES_ULTRAVIOLETAS, OUTPUT);
@@ -18,25 +39,40 @@ void setup()
   lcd.backlight();
   lcd.setCursor(1,12);
   lcd.print("Iniciando...");
-  delay(1000);
-  lcd.clear();
   Serial.begin(9600);
+
+  unsigned long ahora = millis();
+  inicioPantalla = ahora;
+  ultimoCambioLed = ahora;
+  ultimoMuestreo = ahora;
 }
 
-void manejarLuzUltravioleta()
-{
-  int lectura = analogRead(PIN_SENSOR_LUZ);
-  float porcentajeLuz = lectura * 100.0 / 1023.0;
+void manejarPantallaInicio(){
+  if (pantallaInicioActiva && esperar(inicioPantalla, DURACION_INICIO_MS)){
+    lcd.clear();
+    pantallaInicioActiva = false;
+
+    estadoLedRiego = true;
+    digitalWrite(LED_RIEGO, HIGH);
+    ultimoCambioLed = millis();
+  }
+}
+
+void manejarLuzUltravioleta(float porcentajeLuz){
   bool encender = porcentajeLuz <= 25.0;
 
   digitalWrite(PIN_LUCES_ULTRAVIOLETAS, encender ? HIGH : LOW);
 }
 
-void ledParpadeando(){
-  digitalWrite(LED_RIEGO, HIGH);
-  delay(500);
-  digitalWrite(LED_RIEGO, LOW);
-  delay(500);
+void actualizarLedRiego(){
+  if (pantallaInicioActiva){
+    return;
+  }
+
+  if (esperar(ultimoCambioLed, INTERVALO_PARPADEO_MS)){
+    estadoLedRiego = !estadoLedRiego;
+    digitalWrite(LED_RIEGO, estadoLedRiego ? HIGH : LOW);
+  }
 }
 
 float sensarYMostrarHumedad(){
@@ -59,8 +95,7 @@ float sensarYMostrarTemperatura(){
   return temperatura;
 }
 
-float sensarYMostrarLuz()
-{
+float sensarYMostrarLuz(){
   int lectura = analogRead(PIN_SENSOR_LUZ);
   float porcentajeLuz = lectura * 100.0 / 1023.0;
   Serial.print("Iluminacion: ");
@@ -69,41 +104,48 @@ float sensarYMostrarLuz()
   return porcentajeLuz;
 }
 
-bool prendioBomba(float luz, float temp, float hum) {
-  return luz < 80 && temp > 15 && hum < 30;
+bool prendioBomba(float luz, float temp, float hum){
+  return luz > 30 && temp > 15 && hum < 40;
 }
 
-void mostrarDatosIntermitente(){
+void mostrarDatosIntermitente(float humedad, float temperatura, float luz, bool bombaEncendida){
   lcd.setCursor(0, 0);
   lcd.print("H:");
-  lcd.print(sensarYMostrarHumedad(), 1);
+  lcd.print(humedad, 1);
   lcd.print("%");
 
   lcd.setCursor(9, 0);
   lcd.print("L:");
-  lcd.print(sensarYMostrarLuz(),1);
+  lcd.print(luz,1);
   lcd.print("%");  
 
   lcd.setCursor(0, 1);
   lcd.print("T:");
-  lcd.print(sensarYMostrarTemperatura(),1);
-  lcd.print((char)176);
-  lcd.print("C");
+  lcd.print(temperatura, 1);
+  lcd.print("C  ");
 
   lcd.setCursor(9, 1);
   lcd.print("B:");
-  lcd.print(prendioBomba(sensarYMostrarLuz(), sensarYMostrarTemperatura(), sensarYMostrarHumedad()) ? "ON " : "OFF");
+  lcd.print(bombaEncendida ? "ON " : "OFF");
 }
 
-
-void loop()
-{
-  if(prendioBomba(sensarYMostrarLuz(), sensarYMostrarTemperatura(), sensarYMostrarHumedad())){
-    digitalWrite(PIN_BOMBA_AGUA, HIGH);
-  } else{
-    digitalWrite(PIN_BOMBA_AGUA, LOW);
+void actualizarSistema(){
+  if (pantallaInicioActiva || !esperar(ultimoMuestreo, INTERVALO_MUESTREO_MS)){
+    return;
   }
-  ledParpadeando();
-  mostrarDatosIntermitente();
-  manejarLuzUltravioleta();
+
+  float humedad = sensarYMostrarHumedad();
+  float temperatura = sensarYMostrarTemperatura();
+  float luz = sensarYMostrarLuz();
+  bool bombaEncendida = prendioBomba(luz, temperatura, humedad);
+
+  digitalWrite(PIN_BOMBA_AGUA, bombaEncendida ? HIGH : LOW);
+  manejarLuzUltravioleta(luz);
+  mostrarDatosIntermitente(humedad, temperatura, luz, bombaEncendida);
+}
+
+void loop(){
+  manejarPantallaInicio();
+  actualizarLedRiego();
+  actualizarSistema();
 }
