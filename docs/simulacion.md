@@ -10,9 +10,9 @@ Enlace de Tinkercad:
 
 [Abrir la simulación en Tinkercad](https://www.tinkercad.com/things/3ApQIPepXQz-invernadero-proyecto-labo-1/editel?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard&sharecode=7U7pwsu07O8A8DXGv41fDI6yS_DnJD5i0dr5DXYXfiE)
 
-Versión actual:
+Estado publicado actual:
 
-> `v0.2.0` — Lectura de sensores funcional.
+> Rama `feat/lcd_Otros` — lectura de sensores, LCD I2C, bomba automática e iluminación artificial funcionales.
 
 ## Convención para las imágenes
 
@@ -108,6 +108,55 @@ Para insertar una captura:
 **Problemas conocidos:**
 
 - Ninguno conocido. Durante el montaje se corrigió una conexión incorrecta de GND en el divisor de la fotoresistencia.
+
+---
+
+### Rama `feat/lcd_Otros` — LCD, bomba e iluminación artificial
+
+**Objetivo:** integrar una interfaz local, una primera lógica automática de riego y luces artificiales controladas mediante la fotoresistencia.
+
+**Cambios realizados:**
+
+- Se conectó un LCD 16×2 mediante I2C a los pines `A4` y `A5`.
+- Se mostraron humedad, iluminación, temperatura y estado de la bomba.
+- Se agregó un LED en el pin 13 para representar la bomba de agua.
+- Se incorporaron tres LEDs violetas en paralelo, con una resistencia de 220 Ω por rama.
+- Se controlaron las luces mediante un transistor NPN conectado al pin 9 a través de una resistencia de 1 kΩ.
+- Se configuró el encendido de las luces cuando la iluminación es menor o igual a 25 %.
+
+**Circuito:**
+
+![Circuito con LCD, bomba y luces violetas](images/tinkercad-feat-lcd-otros.png)
+
+**Conexiones agregadas:**
+
+| Componente | Conexión | Función |
+|---|---|---|
+| LCD `SDA` | `A4` | Datos I2C |
+| LCD `SCL` | `A5` | Reloj I2C |
+| LED de bomba | Pin 13 mediante 220 Ω | Representación de la bomba |
+| Base del transistor | Pin 9 mediante 1 kΩ | Control de iluminación |
+| Tres LEDs violetas | Tres ramas de 220 Ω | Iluminación artificial |
+| Emisor del transistor | GND común | Cierre del circuito |
+
+**Pruebas realizadas:**
+
+| Prueba | Resultado |
+|---|---|
+| Visualización de las tres mediciones | Correcto |
+| Visualización del estado de la bomba | Correcto |
+| Activación de la bomba según condiciones | Correcto |
+| Encendido de luces con iluminación menor o igual a 25 % | Correcto |
+| Apagado de luces por encima del umbral | Correcto |
+| Encendido simultáneo de los tres LEDs mediante el transistor | Correcto |
+
+**Incidencia resuelta:**
+
+En el primer montaje, la resistencia y el retorno estaban conectados a la misma pata de cada LED y la otra pata quedaba fuera del circuito. Se corrigieron las ramas para que la corriente atraviese cada LED desde 5 V hacia el colector del transistor.
+
+**Problemas conocidos:**
+
+- Ninguno detectado en las pruebas actuales.
 
 ---
 

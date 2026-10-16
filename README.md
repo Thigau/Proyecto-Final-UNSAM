@@ -14,20 +14,20 @@ La primera etapa del proyecto se desarrolla y prueba mediante una simulación en
 
 ## Estado del proyecto
 
-Actualmente el proyecto se encuentra en una etapa inicial de diseño y simulación.
+Actualmente el proyecto se encuentra en una etapa de integración y simulación.
 
-Versión actual: `v0.2.0` — lectura de sensores funcional.
+Estado publicado actual: rama `feat/lcd_Otros` — lectura de sensores, pantalla LCD I2C, primera lógica automática de riego e iluminación artificial con tres LEDs violetas.
 
 - [x] Definir la idea general.
 - [x] Seleccionar los componentes.
 - [x] Diseñar el circuito inicial.
 - [x] Implementar la lectura de sensores.
-- [ ] Implementar el riego automático.
-- [ ] Implementar la iluminación automática.
+- [x] Implementar el riego automático.
+- [x] Implementar la iluminación automática.
 - [ ] Implementar la ventilación automática.
 - [ ] Incorporar los modos manual y automático.
 - [ ] Incorporar alarmas.
-- [ ] Incorporar la pantalla LCD.
+- [x] Incorporar la pantalla LCD.
 - [ ] Integrar y probar el sistema completo.
 - [ ] Preparar la versión final.
 
@@ -54,34 +54,31 @@ El proyecto busca utilizar diferentes capacidades del Arduino Uno:
 | ------------------ | ----------------------------------------- |
 | Entrada analógica  | Humedad, temperatura e iluminación        |
 | Entrada digital    | Pulsador de control                       |
-| Salida digital     | Riego simulado y alarma                   |
-| Salida PWM         | Iluminación y velocidad del ventilador    |
+| Salida digital     | Riego simulado, luces violetas y alarma   |
+| Salida PWM         | Regulación futura de iluminación y ventilador |
 | Comunicación serie | Visualización y diagnóstico de mediciones |
 | Interfaz LCD       | Presentación del estado del sistema       |
 
-## Componentes
+## Componentes incorporados
 
-| Cantidad | Componente                    | Función                                             |
-| -------: | ----------------------------- | --------------------------------------------------- |
-|        1 | Arduino Uno R3                | Control principal                                   |
-|        1 | Breadboard                    | Montaje del circuito                                |
-|        1 | Potenciómetro de 250 kΩ       | Simulación de la humedad de la tierra               |
-|        1 | Sensor de temperatura TMP36   | Medición de temperatura                             |
-|        1 | Fotoresistencia               | Medición de luz ambiental                           |
-|        1 | LED azul                      | Simulación de la bomba de agua                      |
-|        1 | LED amarillo                  | Iluminación regulada mediante PWM                   |
-|        1 | Pulsador                      | Control manual del sistema                          |
-|        1 | Piezo                         | Alarma sonora                                       |
-|        1 | Pantalla LCD 16×2             | Visualización de información                        |
-|        1 | Potenciómetro de 10 kΩ        | Ajuste del contraste del LCD                        |
-|        1 | Motor DC                      | Simulación del ventilador                           |
-|        1 | Transistor NPN                | Control seguro del motor                            |
-|        1 | Diodo                         | Protección contra el retorno de corriente del motor |
-|        3 | Resistencias de 220 Ω         | Protección de los LEDs y del LCD                    |
-|        2 | Resistencias de 10 kΩ         | Divisor de tensión y pull-down del pulsador         |
-|        1 | Resistencia de 1 kΩ           | Control de la base del transistor                   |
-|        1 | Fuente de alimentación de 5 V | Alimentación del motor                              |
-|   Varios | Cables                        | Conexión de los componentes                         |
+| Cantidad | Componente                  | Función actual                                      |
+| -------: | --------------------------- | --------------------------------------------------- |
+|        1 | Arduino Uno R3              | Control principal                                   |
+|        2 | Breadboards                 | Montaje y distribución del circuito                 |
+|        1 | Potenciómetro de 250 kΩ     | Simulación de la humedad de la tierra               |
+|        1 | Sensor de temperatura TMP36 | Medición de temperatura                             |
+|        1 | Fotoresistencia             | Medición de luz ambiental                           |
+|        1 | Resistencia de 10 kΩ        | Divisor de tensión de la fotoresistencia            |
+|        1 | LCD 16×2 con interfaz I2C   | Visualización de humedad, luz, temperatura y bomba  |
+|        1 | LED de diagnóstico          | Prueba de la salida digital 8                       |
+|        1 | LED de bomba                | Simulación de la bomba de agua desde el pin 13      |
+|        3 | LEDs violetas               | Iluminación artificial automática                   |
+|        5 | Resistencias de 220 Ω       | Limitación de corriente de los LEDs                 |
+|        1 | Transistor NPN              | Conmutación conjunta de los tres LEDs violetas      |
+|        1 | Resistencia de 1 kΩ         | Limitación de corriente hacia la base del transistor |
+|   Varios | Cables                      | Alimentación, señales y conexiones comunes          |
+
+El pulsador, el piezo, el motor, el diodo de protección y la fuente externa permanecen previstos para hitos posteriores.
 
 ## Simulación
 

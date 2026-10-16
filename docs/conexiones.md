@@ -55,3 +55,60 @@ El pin `A2` debe conectarse exactamente en la unión entre la fotoresistencia y 
 - Los sensores comparten las líneas de 5 V y GND de la breadboard.
 - Las secciones separadas de un riel deben unirse con un puente cuando la breadboard no tenga continuidad interna entre ellas.
 - Todas las mediciones utilizan el mismo GND como referencia de 0 V.
+
+## Rama `feat/lcd_Otros` — LCD I2C
+
+| Pin del LCD | Conexión en Arduino Uno |
+|---|---|
+| `GND` | `GND` |
+| `VCC` | `5 V` |
+| `SDA` | `A4` |
+| `SCL` | `A5` |
+
+El LCD se inicializa con la dirección I2C `0x27` y una disposición de 16 columnas por 2 filas.
+
+## Rama `feat/lcd_Otros` — bomba simulada
+
+```text
+Pin 13 → resistencia de 220 Ω → ánodo del LED → cátodo del LED → GND
+```
+
+El LED se activa cuando se cumplen simultáneamente las condiciones provisionales definidas en el firmware:
+
+- Iluminación menor a 80 %.
+- Temperatura mayor a 15 °C.
+- Humedad menor a 30 %.
+
+## Rama `feat/lcd_Otros` — luces violetas
+
+El pin 9 no alimenta directamente los LEDs. Controla la base de un transistor NPN mediante una resistencia de 1 kΩ.
+
+```text
+Pin 9 → resistencia de 1 kΩ → base del transistor NPN
+Emisor del transistor → GND
+Colector del transistor → cátodos de los tres LEDs
+```
+
+Cada LED forma una rama independiente:
+
+```text
+5 V → resistencia de 220 Ω → ánodo del LED → cátodo → colector
+```
+
+Las tres ramas se conectan en paralelo:
+
+```text
+5 V → 220 Ω → LED violeta 1 ─┐
+5 V → 220 Ω → LED violeta 2 ─┼→ colector del transistor
+5 V → 220 Ω → LED violeta 3 ─┘
+                                  emisor → GND
+```
+
+### Consideraciones de montaje
+
+- Cada LED debe tener su propia resistencia de 220 Ω.
+- La resistencia y el retorno al colector deben conectarse a patas opuestas del LED.
+- No se deben colocar ambos extremos del circuito en la misma columna de la breadboard, porque el LED quedaría fuera del recorrido de corriente.
+- El ánodo se conecta hacia 5 V y el cátodo hacia el colector.
+- Los rieles de GND de ambas breadboards deben compartir la misma referencia.
+- Las luces se activan cuando la medición de iluminación es menor o igual a 25 %.
